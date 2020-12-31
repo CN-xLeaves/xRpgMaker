@@ -5,8 +5,6 @@
 
 
 ' Import SDK [develop good classification habits]
-#Include "src\SDK\xui_Element\xge_xui_Static.bi"
-#Include "src\SDK\xui_Element\xge_xui_ScrollBar.bi"
 
 
 
