@@ -50,6 +50,7 @@ Function A13_System_Scene(msg As Integer, param As Integer, eve As XGE_EVENT Ptr
 		Case XGE_MSG_FREERES			' unload resources
 			
 		Case XGE_MSG_CLOSE				' window closing
-			Return -1
+			UI_Frame_Exit_OnClick(UI_Frame_Exit, 0)
 	End Select
+	Return 0
 End Function

@@ -19,12 +19,21 @@ End Sub
 
 ' 保存按钮点击
 Sub UI_Frame_Save_OnClick(ele As xui.Button Ptr, btn As Integer)
-	
+	SaveTileData()
 End Sub
 
 ' 退出按钮点击
 Sub UI_Frame_Exit_OnClick(ele As xui.Button Ptr, btn As Integer)
-	xge.Scene.StopAll()
+	Dim iRet As Integer = MessageBox(xge.hWnd, "退出数据库编辑器将会丢失所有未保存的数据，退出前先保存数据库吗？", "xRpgMaker DataBase Edit", MB_ICONQUESTION Or MB_YESNOCANCEL)
+	Select Case iRet
+		Case IDYES						' 先保存再退出
+			SaveTileData()
+			xge.Scene.StopAll()
+		Case IDNO						' 直接退出
+			xge.Scene.StopAll()
+		Case IDCANCEL					' 取消，啥也不干
+			
+	End Select
 End Sub
 
 
@@ -56,12 +65,8 @@ Sub xRpgMaker_InitUI(DefaultPage As Integer)
 	Next
 	UI_Frame_Page(DefaultPage)->Visible = TRUE
 	' 创建保存和退出按钮
-	UI_Frame_Save = xui.CreateButton(XUI_LAYOUT_RULER_PIXEL, 0, 0, 80, 24, "保 存", "Frame_Save")
-	UI_Frame_Exit = xui.CreateButton(XUI_LAYOUT_RULER_PIXEL, 0, 0, 80, 24, "退 出", "Frame_Exit")
-	UI_Frame_Save->Layout.RectBox.LeftOffset = 624
-	UI_Frame_Save->Layout.RectBox.TopOffset = 8
-	UI_Frame_Exit->Layout.RectBox.LeftOffset = 8
-	UI_Frame_Exit->Layout.RectBox.TopOffset = 8
+	UI_Frame_Save = xui.CreateButton(XUI_LAYOUT_RULER_PIXEL, 624, 8, 80, 24, "保 存", "Frame_Save")
+	UI_Frame_Exit = xui.CreateButton(XUI_LAYOUT_RULER_PIXEL, 8, 8, 80, 24, "退 出", "Frame_Exit")
 	UI_Frame_Save->Event.OnClick = Cast(Any Ptr, @UI_Frame_Save_OnClick)
 	UI_Frame_Exit->Event.OnClick = Cast(Any Ptr, @UI_Frame_Exit_OnClick)
 	UI_Frame_Layout_Btns->Childs.AddElement(UI_Frame_Save)

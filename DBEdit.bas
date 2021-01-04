@@ -5,6 +5,13 @@
 
 
 ' Import SDK [develop good classification habits]
+#include "string.bi"
+#Include "src\SDK\InputBox.bi"
+
+
+
+' Import object class [develop good classification habits]
+#Include "src\app\class\Class_Tile.bi"
 
 
 
@@ -13,8 +20,8 @@
 
 
 
-' Import object class [develop good classification habits]
-#Include "src\app\class\Class_Tile.bi"
+' Import xui Elements
+#Include "src\SDK\xui_Element\xge_xui_TileEdit.bi"
 
 
 

@@ -9,6 +9,11 @@
 
 ' 加载全局资源
 Function LoadRes() As Integer
+	' 初始化数据
+	G_Path_Data = ExePath() & "\Data\"
+	G_Path_Tilesets = ExePath() & "\Graphics\Tilesets\"
+	
+	' 加载公共资源
 	xge.Text.LoadFont(ExePath & "\ToolRes\simsun_12px_gb2312.xrf", 0)
 	xge.Text.LoadFont(ExePath & "\ToolRes\simsun_16px_gb2312.xrf", 0)
 	xRpgMaker_InitUI(9)

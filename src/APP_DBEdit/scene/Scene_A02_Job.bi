@@ -2,14 +2,10 @@
 
 
 Sub InitUI_A02_Job(root As xui.Element Ptr)
-	UI_Job_LayoutList = xui.CreateElement(XUI_LAYOUT_RULER_RATIO, 0, 0, 2, 1, XUI_LAYOUT_T2B, "UI_TileSet_LayoutList")
-	UI_Job_LayoutInfo = xui.CreateFrame(XUI_LAYOUT_RULER_RATIO, 0, 0, 7, 1, XUI_LAYOUT_L2R, "职业编辑", "UI_TileSet_LayoutInfo")
-	UI_Job_LayoutList->Layout.RectBox.LeftOffset = 6
-	UI_Job_LayoutList->Layout.RectBox.TopOffset = 6
+	UI_Job_LayoutList = xui.CreateElement(XUI_LAYOUT_RULER_RATIO, 6, 6, 2, 1, XUI_LAYOUT_T2B, "UI_TileSet_LayoutList")
+	UI_Job_LayoutInfo = xui.CreateFrame(XUI_LAYOUT_RULER_RATIO, 6, 6, 7, 1, XUI_LAYOUT_L2R, "职业编辑", "UI_TileSet_LayoutInfo")
 	UI_Job_LayoutList->Layout.RectBox.BottomOffset = 6
-	UI_Job_LayoutInfo->Layout.RectBox.LeftOffset = 6
 	UI_Job_LayoutInfo->Layout.RectBox.RightOffset = 6
-	UI_Job_LayoutInfo->Layout.RectBox.TopOffset = 6
 	UI_Job_LayoutInfo->Layout.RectBox.BottomOffset = 6
 	UI_Job_LayoutInfo->BackStyle.BorderColor = &HFF808080
 	UI_Job_LayoutInfo->BackStyle.FillColor = &HFFD0D0D0
@@ -74,6 +70,7 @@ Function A02_Job_Scene(msg As Integer, param As Integer, eve As XGE_EVENT Ptr) A
 		Case XGE_MSG_FREERES			' unload resources
 			
 		Case XGE_MSG_CLOSE				' window closing
-			Return -1
+			UI_Frame_Exit_OnClick(UI_Frame_Exit, 0)
 	End Select
+	Return 0
 End Function
