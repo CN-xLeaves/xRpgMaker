@@ -65,7 +65,7 @@ End Sub
 
 ' 修改名称按钮
 Sub UI_TileSet_Name_OnClick(ele As xui.Button Ptr, btn As Integer)
-	If InputBox(xge.hWnd, "请输入新的图块集名称：", "xRpgMaker DataBase Edit", UI_TileSet_Name->Text) Then
+	If InputBox(xge.hWnd, "请输入新的图块集名称：", "xRpgMaker DataBase Edit", ele->Text) Then
 		Dim TileSetInfo As xRpgMaker_TileSet Ptr = UI_TileSet_List->List.UserData(UI_TileSet_List->ListIndex)
 		TileSetInfo->TileSetName = InputBox_RetStr
 		UI_TileSet_List->List.Text(UI_TileSet_List->ListIndex) = @TileSetInfo->TileSetName
@@ -74,10 +74,47 @@ End Sub
 
 ' 修改图块集图片按钮
 Sub UI_TileSet_File_OnClick(ele As xui.Button Ptr, btn As Integer)
-	If InputBox(xge.hWnd, "请输入新的图块集图片文件名：", "xRpgMaker DataBase Edit", UI_TileSet_File->Text) Then
+	If InputBox(xge.hWnd, "请输入新的图块集图片文件名：", "xRpgMaker DataBase Edit", ele->Text) Then
 		Dim TileSetInfo As xRpgMaker_TileSet Ptr = UI_TileSet_List->List.UserData(UI_TileSet_List->ListIndex)
 		TileSetInfo->TileSetFile = InputBox_RetStr
 		UI_TileSet_File->Text = @TileSetInfo->TileSetFile
+	EndIf
+End Sub
+
+' 修改自动原件图片按钮 (自动原件编号通过TagInt属性保存)
+Sub UI_TileSet_AutoTile_OnClick(ele As xui.Button Ptr, btn As Integer)
+	Dim arrid As Integer = ele->TagInt
+	If InputBox(xge.hWnd, "请输入新的自动原件图片文件名：", "xRpgMaker DataBase Edit", ele->Text) Then
+		Dim TileSetInfo As xRpgMaker_TileSet Ptr = UI_TileSet_List->List.UserData(UI_TileSet_List->ListIndex)
+		TileSetInfo->AutoTileFile(arrid) = InputBox_RetStr
+		UI_TileSet_AutoTile(arrid)->Text = @TileSetInfo->AutoTileFile(arrid)
+	EndIf
+End Sub
+
+' 修改全景图片按钮
+Sub UI_TileSet_Back_OnClick(ele As xui.Button Ptr, btn As Integer)
+	If InputBox(xge.hWnd, "请输入新的全景图片文件名：", "xRpgMaker DataBase Edit", ele->Text) Then
+		Dim TileSetInfo As xRpgMaker_TileSet Ptr = UI_TileSet_List->List.UserData(UI_TileSet_List->ListIndex)
+		TileSetInfo->BackGroundFile = InputBox_RetStr
+		UI_TileSet_Back->Text = @TileSetInfo->BackGroundFile
+	EndIf
+End Sub
+
+' 修改雾图片按钮
+Sub UI_TileSet_Fog_OnClick(ele As xui.Button Ptr, btn As Integer)
+	If InputBox(xge.hWnd, "请输入新的雾图片文件名：", "xRpgMaker DataBase Edit", ele->Text) Then
+		Dim TileSetInfo As xRpgMaker_TileSet Ptr = UI_TileSet_List->List.UserData(UI_TileSet_List->ListIndex)
+		TileSetInfo->FogFile = InputBox_RetStr
+		UI_TileSet_Fog->Text = @TileSetInfo->FogFile
+	EndIf
+End Sub
+
+' 修改战斗背景图片按钮
+Sub UI_TileSet_Battle_OnClick(ele As xui.Button Ptr, btn As Integer)
+	If InputBox(xge.hWnd, "请输入新的战斗背景图片文件名：", "xRpgMaker DataBase Edit", ele->Text) Then
+		Dim TileSetInfo As xRpgMaker_TileSet Ptr = UI_TileSet_List->List.UserData(UI_TileSet_List->ListIndex)
+		TileSetInfo->BattleFile = InputBox_RetStr
+		UI_TileSet_Battle->Text = @TileSetInfo->BattleFile
 	EndIf
 End Sub
 
@@ -162,10 +199,6 @@ Sub InitUI_A11_TileSet(root As xui.Element Ptr)
 	UI_TileSet_File_Label = xui.CreateLabel(XUI_LAYOUT_RULER_RATIO, 0, 10, 1, 1, "地图元件图像：", &HFF000000, 1, "UI_TileSet_Name_Label")
 	UI_TileSet_File = xui.CreateButton(XUI_LAYOUT_RULER_RATIO, 0, 0, 1, 1, "", "UI_TileSet_Name")
 	UI_TileSet_AutoTile_Label = xui.CreateLabel(XUI_LAYOUT_RULER_RATIO, 0, 10, 1, 1, "自动元件图像：", &HFF000000, 1, "UI_TileSet_Name_Label")
-	For i As Integer = 0 To 6
-		UI_TileSet_AutoTile(i) = xui.CreateButton(XUI_LAYOUT_RULER_RATIO, 0, 0, 1, 1, "无", "UI_TileSet_AutoTile_" & i)
-		UI_TileSet_AutoTile(i)->Layout.RectBox.BottomOffset = 2
-	Next
 	UI_TileSet_Back_Label = xui.CreateLabel(XUI_LAYOUT_RULER_RATIO, 0, 8, 1, 1, "全景图像：", &HFF000000, 1, "UI_TileSet_Back_Label")
 	UI_TileSet_Back = xui.CreateButton(XUI_LAYOUT_RULER_RATIO, 0, 0, 1, 1, "无", "UI_TileSet_Back")
 	UI_TileSet_Fog_Label = xui.CreateLabel(XUI_LAYOUT_RULER_RATIO, 0, 10, 1, 1, "雾图像：", &HFF000000, 1, "UI_TileSet_Fog_Label")
@@ -179,7 +212,11 @@ Sub InitUI_A11_TileSet(root As xui.Element Ptr)
 	UI_TileSet_Layout1->Childs.AddElement(UI_TileSet_File)
 	UI_TileSet_Layout1->Childs.AddElement(UI_TileSet_AutoTile_Label)
 	For i As Integer = 0 To 6
+		UI_TileSet_AutoTile(i) = xui.CreateButton(XUI_LAYOUT_RULER_RATIO, 0, 0, 1, 1, "无", "UI_TileSet_AutoTile_" & i)
+		UI_TileSet_AutoTile(i)->Layout.RectBox.BottomOffset = 2
+		UI_TileSet_AutoTile(i)->TagInt = i
 		UI_TileSet_Layout1->Childs.AddElement(UI_TileSet_AutoTile(i))
+		UI_TileSet_AutoTile(i)->Event.OnClick = Cast(Any Ptr, @UI_TileSet_AutoTile_OnClick)
 	Next
 	UI_TileSet_Layout1->Childs.AddElement(UI_TileSet_Back_Label)
 	UI_TileSet_Layout1->Childs.AddElement(UI_TileSet_Back)
@@ -190,6 +227,9 @@ Sub InitUI_A11_TileSet(root As xui.Element Ptr)
 	UI_TileSet_Layout1->Childs.AddElement(UI_TileSet_Layout1_Space)
 	UI_TileSet_Name->Event.OnClick = Cast(Any Ptr, @UI_TileSet_Name_OnClick)
 	UI_TileSet_File->Event.OnClick = Cast(Any Ptr, @UI_TileSet_File_OnClick)
+	UI_TileSet_Back->Event.OnClick = Cast(Any Ptr, @UI_TileSet_Back_OnClick)
+	UI_TileSet_Fog->Event.OnClick = Cast(Any Ptr, @UI_TileSet_Fog_OnClick)
+	UI_TileSet_Battle->Event.OnClick = Cast(Any Ptr, @UI_TileSet_Battle_OnClick)
 	' 图块属性编辑
 	UI_TileSet_TileEdit = xui.CreateTileEdit(XUI_LAYOUT_RULER_RATIO, 0, 0, 1, 1, 0, 0, "UI_TileSet_TileEdit")
 	UI_TileSet_Layout2->Childs.AddElement(UI_TileSet_TileEdit)
